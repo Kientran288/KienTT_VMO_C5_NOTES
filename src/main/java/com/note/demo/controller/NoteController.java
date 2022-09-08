@@ -27,39 +27,39 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @Log4j2
-@RequestMapping("/api-kientt-note")
+@RequestMapping("/api/notes")
 public class NoteController {
 
     @Autowired
     NoteService noteService;
 
-    @GetMapping("/notes")
+    @GetMapping("/get-all")
     public ResponseEntity<List<NoteResponse>> getAllNote(@RequestParam(required = false) String title, Principal principal) {
         return noteService.getAllNote(title, principal);
     }
 
 
-    @GetMapping("/note/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<NoteResponse> getNoteById(@PathVariable("id") long id) {
         return noteService.detail(id);
     }
 
-    @PostMapping(value = "/notes", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/create", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Note> createNote(@RequestPart("note") NoteRequest noteRequest, @RequestPart("file") MultipartFile file, Principal principal) {
         return noteService.create(noteRequest, file, principal);
     }
 
-    @PutMapping(value = "/notes/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/update/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Note> updateNote(@PathVariable("id") long id, @RequestPart("note") NoteRequest noteRequest, @RequestPart("file") MultipartFile file) {
         return noteService.edit(id, noteRequest, file);
     }
 
-    @DeleteMapping("/notes/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteNote(@PathVariable("id") long id) {
         return noteService.delete(id);
     }
 
-    @DeleteMapping("/notes")
+    @DeleteMapping("/delete-all")
     public ResponseEntity<HttpStatus> deleteAllNotes() {
         return noteService.deleteAll();
     }
