@@ -5,6 +5,7 @@ import com.note.demo.models.EStatus;
 import com.note.demo.models.Note;
 import com.note.demo.payload.request.CheckboxRequest;
 import com.note.demo.payload.request.NoteRequest;
+import com.note.demo.payload.response.CountUnfinishedResponse;
 import com.note.demo.payload.response.NoteResponse;
 import com.note.demo.repository.CheckboxRepository;
 import com.note.demo.repository.NoteRepository;
@@ -195,7 +196,20 @@ public class NoteServiceImpl implements NoteService {
         try {
             noteRepository.deleteAll();
             checkboxRepository.deleteAll();
+            filesStorageService.deleteAll();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            log.error(e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<CountUnfinishedResponse> countUnfinishedNote(String title, Principal principal) {
+        try {
+            String userName = principal.getName();
+            long count = noteRepository.countUnfinished(userName);
+            return new ResponseEntity<>(new CountUnfinishedResponse(count), HttpStatus.OK);
         } catch (Exception e) {
             log.error(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

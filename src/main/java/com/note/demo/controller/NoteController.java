@@ -2,6 +2,7 @@ package com.note.demo.controller;
 
 import com.note.demo.models.Note;
 import com.note.demo.payload.request.NoteRequest;
+import com.note.demo.payload.response.CountUnfinishedResponse;
 import com.note.demo.payload.response.NoteResponse;
 import com.note.demo.services.NoteService;
 import lombok.extern.log4j.Log4j2;
@@ -62,6 +63,11 @@ public class NoteController {
     @DeleteMapping("/delete-all")
     public ResponseEntity<HttpStatus> deleteAllNotes() {
         return noteService.deleteAll();
+    }
+
+    @GetMapping("/count-unfinished")
+    public ResponseEntity<CountUnfinishedResponse> countUnfinishedNote(@RequestParam(required = false) String title, Principal principal) {
+        return noteService.countUnfinishedNote(title, principal);
     }
 
 }

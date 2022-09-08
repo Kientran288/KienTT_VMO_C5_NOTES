@@ -2,6 +2,7 @@ package com.note.demo.services;
 
 import com.note.demo.models.Note;
 import com.note.demo.payload.request.NoteRequest;
+import com.note.demo.payload.response.CountUnfinishedResponse;
 import com.note.demo.payload.response.NoteResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,4 +27,6 @@ public interface NoteService {
     ResponseEntity<HttpStatus> delete(long id);
 
     ResponseEntity<HttpStatus> deleteAll();
+
+    ResponseEntity<CountUnfinishedResponse> countUnfinishedNote(String title, Principal principal);
 }
